@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@layer components {
+    @keyframes marqueeScroll {
+        0% {
+            transform: translateX(0%);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+}
+
+@layer base {
+    button {
+        cursor: pointer;
+    }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* --- ShopAuthen refined theme: professional white-forward gradient with warm accents --- */
+:root{
+    --shop-brown-900: #3b2f2a;
+    --shop-brown-700: #6b4f44;
+    --shop-brown-400: #b99d8f;
+    --shop-offwhite: #ffffff; /* now pure white for a clean modern look */
+    --shop-cream: #f7f3ef;    /* subtle warm tint */
+    --card-bg: rgba(255,255,255,0.96); /* almost solid white for crisp cards */
+    --accent-gloss: rgba(255,255,255,0.55);
+}
+
+body {
+    /* diagonal professional gradient that starts white and moves into a soft warm cream */
+    background: linear-gradient(135deg, var(--shop-offwhite) 0%, var(--shop-cream) 48%, #efe6d9 100%);
+    color: var(--shop-brown-900);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* light radial glow near the header for subtle depth */
+body::before{
+    content: '';
+    position: fixed;
+    left: 50%;
+    top: 8%;
+    width: 80vw;
+    height: 40vh;
+    transform: translateX(-50%);
+    background: radial-gradient(closest-side, rgba(235,225,215,0.45), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Product card floating and click-open animations */
+@keyframes floatY {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-6px); }
+}
+
+@keyframes popOpen {
+    0% { transform: scale(1) translateY(0); opacity: 1; }
+    100% { transform: scale(1.04) translateY(-10px); opacity: 1; }
+}
+
+.product-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 0.6rem;
+    transition: transform 280ms cubic-bezier(.2,.9,.2,1), box-shadow 280ms cubic-bezier(.2,.9,.2,1), border-color 220ms;
+    will-change: transform;
+    box-shadow: 0 10px 30px rgba(17,17,17,0.06);
+    border: 1px solid rgba(16,16,16,0.04);
+    position: relative;
+    z-index: 1;
+}
+
+.product-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 28px 60px rgba(17,17,17,0.12);
+    border-color: rgba(107,79,68,0.08);
+}
+
+.product-card.floating {
+    animation: floatY 3.6s ease-in-out infinite alternate;
+}
+
+.product-card.animate-open {
+    animation: popOpen 260ms ease forwards;
+}
+
+.product-image {
+    transition: transform 420ms cubic-bezier(.2,.9,.2,1), filter 420ms;
+    backface-visibility: hidden;
+}
+.product-card:hover .product-image {
+    transform: scale(1.06) rotate(-0.6deg);
+    filter: saturate(1.02) contrast(1.02);
+}
+
+/* subtle title & price styling to match the refined palette */
+.product-meta p { color: var(--shop-brown-900); font-weight: 600 }
+.product-meta .price { color: var(--shop-brown-700); font-weight: 700 }
+
+/* a soft glossy highlight at the top of cards */
+.product-card::after{
+    content: '';
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    top: 8px;
+    height: 36%;
+    border-radius: 12px 12px 0 0;
+    background: linear-gradient(180deg, var(--accent-gloss), transparent 60%);
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* responsive tweaks */
+@media (max-width: 640px) {
+    .product-card { padding: 0.5rem; }
+}
+/* Accessibility: respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .product-card, .product-image { transition: none; }
+}
